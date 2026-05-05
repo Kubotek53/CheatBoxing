@@ -1,0 +1,8 @@
+Gra w Unity
+1. Rougelike
+2. 2D
+3. Mechanika: Rytmiczna (W sensie trzeba w odpowiednim momencie coś kliknąć, żeby się zadziałało, )
+4. Gra bokserka (2D lub 2.5D).
+5. Drabina turniejowa, Między rundami jest sklep w którym (zdobywasz umiejętności, ciosy, kontrabandę, wzmocnienia) jeśli przegrasz zaczynasz od nowa (Element Rougelike)
+6. Każda runda jest podzielona na tury, ilość tur jest zależna od miejsca w drabince. Jeśli po tych turach będziesz miał poniżej 50% przegrywasz, jeśli między 50-75% to dodatkowa tura, a jak powyżej 75% WIN
+7. Po pokonaniu bosa przechodzisz na kolejny chapter (kolejna drabinka) jak w hadesie, wspinasz się po szczeblach
