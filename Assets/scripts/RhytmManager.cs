@@ -4,6 +4,7 @@ public class RhytmManager:
 MonoBehaviour
 {
     public float bpm= 120f;
+    public int i = 0;
     private float beatInterval;
     private float beatTimer;
     void Start()
@@ -11,13 +12,14 @@ MonoBehaviour
         beatInterval =  60F/bpm;
     }
 
-    void update()
+    void Update()
     {
-        beatTimer += beatTimer.deltaTime;
+        beatTimer += Time.deltaTime;
         if(beatTimer >= beatInterval)
         {
             beatTimer -=beatInterval;
-            Debug.log("Beat");
-        }
-    }
+            i += 1;
+            Debug.Log("Beat "+ i);
+        }  
+          }
 }
