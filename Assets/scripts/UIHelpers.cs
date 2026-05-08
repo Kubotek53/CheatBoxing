@@ -45,7 +45,7 @@ public static class UIHelpers
 
         var sr = go.AddComponent<SpriteRenderer>();
         sr.sprite = CreateCircleTexture();
-        sr.color  = color;
+        sr.color = color;
         sr.sortingOrder = 5;
         return go;
     }
@@ -59,20 +59,20 @@ public static class UIHelpers
         float thickness = 6f;
 
         for (int x = 0; x < size; x++)
-        for (int y = 0; y < size; y++)
-        {
-            float dist = Vector2.Distance(new Vector2(x, y), center);
-            float alpha = 0f;
+            for (int y = 0; y < size; y++)
+            {
+                float dist = Vector2.Distance(new Vector2(x, y), center);
+                float alpha = 0f;
 
-            // Ring: między r-thickness a r
-            if (dist >= r - thickness && dist <= r)
-                alpha = 1f;
-            // Wewnętrzna kropka (dla InnerRing - mały kółek bez dziury)
-            else if (dist < r - thickness - 2f)
-                alpha = 0f;
+                // Ring: między r-thickness a r
+                if (dist >= r - thickness && dist <= r)
+                    alpha = 1f;
+                // Wewnętrzna kropka (dla InnerRing - mały kółek bez dziury)
+                else if (dist < r - thickness - 2f)
+                    alpha = 0f;
 
-            tex.SetPixel(x, y, new Color(1, 1, 1, alpha));
-        }
+                tex.SetPixel(x, y, new Color(1, 1, 1, alpha));
+            }
 
         tex.Apply();
         return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);

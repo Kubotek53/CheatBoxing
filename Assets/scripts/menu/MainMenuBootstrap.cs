@@ -4,30 +4,30 @@ using TMPro;
 using System.Collections;
 
 /// <summary>
-/// Tworzy CAŁY UI sceny Fight przez kod — zero ręcznego składania w Inspectorze.
-/// Dodaj ten skrypt do pustego GameObject "FightUIBootstrap" w scenie.
+/// Tworzy CAŁY UI sceny głównego menu przez kod — zero ręcznego składania w Inspectorze.
+/// Dodaj ten skrypt do pustego GameObject "MainMenuBootstrap" w scenie.
 /// Resztę zrobi sam przy Start().
 /// </summary>
-public class FightUIBootstrap : MonoBehaviour
+public class MainMenuBootstrap : MonoBehaviour
 {
     // ── Referencje tworzone dynamicznie ──────────────────────
-    private Canvas      canvas;
-    private Slider      playerHPSlider, enemyHPSlider;
-    private Image       playerHPFill, enemyHPFill;
+    private Canvas canvas;
+    private Slider playerHPSlider, enemyHPSlider;
+    private Image playerHPFill, enemyHPFill;
     private TextMeshProUGUI hitResultText, turnText, roundResultText;
     private TextMeshProUGUI playerHPLabel, enemyHPLabel;
-    private Image       screenFlash;
-    private GameObject  hitZoneRing;       // kółko docelowe dla nut
+    private Image screenFlash;
+    private GameObject hitZoneRing;       // kółko docelowe dla nut
 
     // ── Paleta kolorów ────────────────────────────────────────
-    static readonly Color COL_BG         = new Color(0.07f, 0.07f, 0.10f, 0.95f);
+    static readonly Color COL_BG = new Color(0.07f, 0.07f, 0.10f, 0.95f);
     static readonly Color COL_PLAYER_BAR = new Color(0.18f, 0.85f, 0.44f);   // zielony
-    static readonly Color COL_ENEMY_BAR  = new Color(0.95f, 0.25f, 0.25f);   // czerwony
-    static readonly Color COL_PERFECT    = new Color(1f,    0.92f, 0.016f);  // złoty
-    static readonly Color COL_GOOD       = new Color(0.18f, 0.85f, 0.44f);
-    static readonly Color COL_OK         = new Color(0.25f, 0.60f, 1f);
-    static readonly Color COL_MISS       = new Color(1f,    0.25f, 0.25f);
-    static readonly Color COL_PANEL      = new Color(0f,    0f,    0f,    0.55f);
+    static readonly Color COL_ENEMY_BAR = new Color(0.95f, 0.25f, 0.25f);   // czerwony
+    static readonly Color COL_PERFECT = new Color(1f, 0.92f, 0.016f);  // złoty
+    static readonly Color COL_GOOD = new Color(0.18f, 0.85f, 0.44f);
+    static readonly Color COL_OK = new Color(0.25f, 0.60f, 1f);
+    static readonly Color COL_MISS = new Color(1f, 0.25f, 0.25f);
+    static readonly Color COL_PANEL = new Color(0f, 0f, 0f, 0.55f);
 
     // ─────────────────────────────────────────────────────────
 
@@ -161,11 +161,11 @@ public class FightUIBootstrap : MonoBehaviour
         hitZoneRing.transform.position = new Vector3(0, -1.5f, 0); // centrum sceny
 
         // Zewnętrzny ring (niebieski)
-        var outer = CreateCircleSprite(hitZoneRing.transform, "OuterRing", 1.3f,
+        var outer = UIHelpers.CreateCircleSprite(hitZoneRing.transform, "OuterRing", 1.3f,
             new Color(0.25f, 0.60f, 1f, 0.5f));
 
         // Wewnętrzny (biały rdzeń)
-        var inner = CreateCircleSprite(hitZoneRing.transform, "InnerRing", 0.35f,
+        var inner = UIHelpers.CreateCircleSprite(hitZoneRing.transform, "InnerRing", 0.35f,
             new Color(1f, 1f, 1f, 0.85f));
 
         // Pulsacja kółka zewnętrznego co beat
@@ -213,7 +213,7 @@ public class FightUIBootstrap : MonoBehaviour
     void BuildTexts()
     {
         // Numer tury — góra środek
-        var turnGO = CreateUIObject("TurnText", canvas.transform);
+        var turnGO = UIHelpers.CreateUIObject("TurnText", canvas.transform);
         turnText = turnGO.AddComponent<TextMeshProUGUI>();
         turnText.text = "Tura 0/4";
         turnText.fontSize = 22;
@@ -221,11 +221,11 @@ public class FightUIBootstrap : MonoBehaviour
         turnText.color = Color.white;
         turnText.alignment = TextAlignmentOptions.Center;
         var tRT = turnGO.GetComponent<RectTransform>();
-        SetAnchorCorner(tRT, Corner.TopCenter, new Vector2(0, -20));
+        UIHelpers.SetAnchorCorner(tRT, UIHelpers.Corner.TopCenter, new Vector2(0, -20));
         tRT.sizeDelta = new Vector2(220, 40);
 
         // Wynik trafienia — środek ekranu
-        var hitGO = CreateUIObject("HitResultText", canvas.transform);
+        var hitGO = UIHelpers.CreateUIObject("HitResultText", canvas.transform);
         hitResultText = hitGO.AddComponent<TextMeshProUGUI>();
         hitResultText.text = "";
         hitResultText.fontSize = 52;
@@ -234,11 +234,11 @@ public class FightUIBootstrap : MonoBehaviour
         hitResultText.alignment = TextAlignmentOptions.Center;
         hitResultText.alpha = 0;
         var hRT = hitGO.GetComponent<RectTransform>();
-        SetAnchorCenter(hRT, new Vector2(0, 80));
+        UIHelpers.SetAnchorCenter(hRT, new Vector2(0, 80));
         hRT.sizeDelta = new Vector2(500, 80);
 
         // Wynik rundy — środek ekranu
-        var rrGO = CreateUIObject("RoundResultText", canvas.transform);
+        var rrGO = UIHelpers.CreateUIObject("RoundResultText", canvas.transform);
         roundResultText = rrGO.AddComponent<TextMeshProUGUI>();
         roundResultText.text = "";
         roundResultText.fontSize = 64;
@@ -247,14 +247,14 @@ public class FightUIBootstrap : MonoBehaviour
         roundResultText.alignment = TextAlignmentOptions.Center;
         roundResultText.alpha = 0;
         var rrRT = rrGO.GetComponent<RectTransform>();
-        SetAnchorCenter(rrRT, Vector2.zero);
+        UIHelpers.SetAnchorCenter(rrRT, Vector2.zero);
         rrRT.sizeDelta = new Vector2(600, 100);
     }
 
     // ── Flash ekranu ─────────────────────────────────────────
     void BuildScreenFlash()
     {
-        var go = CreateUIObject("ScreenFlash", canvas.transform);
+        var go = UIHelpers.CreateUIObject("ScreenFlash", canvas.transform);
         screenFlash = go.AddComponent<Image>();
         screenFlash.color = Color.clear;
         screenFlash.raycastTarget = false;
@@ -275,10 +275,10 @@ public class FightUIBootstrap : MonoBehaviour
         if (fm == null) return;
 
         fm.OnPlayerHPChanged += (cur, max) => UpdateSlider(playerHPSlider, playerHPFill, cur, max, COL_PLAYER_BAR);
-        fm.OnEnemyHPChanged  += (cur, max) => UpdateSlider(enemyHPSlider,  enemyHPFill,  cur, max, COL_ENEMY_BAR);
-        fm.OnPlayerAttack    += (result, dmg) => ShowHitResult(result);
-        fm.OnEnemyAttack     += dmg => StartCoroutine(FlashScreen(COL_MISS, 0.18f, 0.28f));
-        fm.OnTurnStarted     += turn =>
+        fm.OnEnemyHPChanged += (cur, max) => UpdateSlider(enemyHPSlider, enemyHPFill, cur, max, COL_ENEMY_BAR);
+        fm.OnPlayerAttack += (result, dmg) => ShowHitResult(result);
+        fm.OnEnemyAttack += dmg => StartCoroutine(FlashScreen(COL_MISS, 0.18f, 0.28f));
+        fm.OnTurnStarted += turn =>
         {
             if (turnText) turnText.text = $"Tura {turn}/{fm.totalTurns}";
         };
@@ -286,14 +286,14 @@ public class FightUIBootstrap : MonoBehaviour
         {
             (string label, Color col) = result switch
             {
-                FightManager.RoundResult.Win              => ("WYGRANA!",    COL_GOOD),
-                FightManager.RoundResult.Lose             => ("PORAŻKA",     COL_MISS),
+                FightManager.RoundResult.Win => ("WYGRANA!", COL_GOOD),
+                FightManager.RoundResult.Lose => ("PORAŻKA", COL_MISS),
                 FightManager.RoundResult.BonusTurnStarted => ("BONUS TURA!", COL_OK),
-                _                                         => ("?",           Color.white)
+                _ => ("?", Color.white)
             };
             if (roundResultText != null)
             {
-                roundResultText.text  = label;
+                roundResultText.text = label;
                 roundResultText.color = col;
                 StartCoroutine(FadeText(roundResultText, 2.5f));
                 StartCoroutine(FlashScreen(col, 0.22f, 0.45f));
@@ -325,13 +325,13 @@ public class FightUIBootstrap : MonoBehaviour
         (string label, Color col) = result switch
         {
             InputHandler.HitResult.Perfect => ("PERFECT!", COL_PERFECT),
-            InputHandler.HitResult.Good    => ("GOOD",     COL_GOOD),
-            InputHandler.HitResult.Ok      => ("OK",       COL_OK),
-            InputHandler.HitResult.Miss    => ("MISS",     COL_MISS),
-            _                              => ("?",        Color.white)
+            InputHandler.HitResult.Good => ("GOOD", COL_GOOD),
+            InputHandler.HitResult.Ok => ("OK", COL_OK),
+            InputHandler.HitResult.Miss => ("MISS", COL_MISS),
+            _ => ("?", Color.white)
         };
 
-        hitResultText.text  = label;
+        hitResultText.text = label;
         hitResultText.color = col;
         StopCoroutine(nameof(FadeHitText));
         StartCoroutine(FadeHitText());
@@ -346,7 +346,7 @@ public class FightUIBootstrap : MonoBehaviour
         // Skok w górę
         var rt = hitResultText.GetComponent<RectTransform>();
         Vector2 start = new Vector2(0, 80);
-        Vector2 end   = new Vector2(0, 130);
+        Vector2 end = new Vector2(0, 130);
         float t = 0f; float dur = 0.55f;
 
         while (t < dur)
@@ -393,84 +393,5 @@ public class FightUIBootstrap : MonoBehaviour
             yield return null;
         }
         screenFlash.color = Color.clear;
-    }
-
-    // ═══════════════════════════════════════════════════════
-    // HELPERY
-    // ═══════════════════════════════════════════════════════
-
-    enum Corner { TopLeft, TopRight, TopCenter, Center }
-
-    static GameObject CreateUIObject(string name, Transform parent)
-    {
-        var go = new GameObject(name);
-        go.transform.SetParent(parent, false);
-        go.AddComponent<RectTransform>();
-        return go;
-    }
-
-    static void SetAnchorCorner(RectTransform rt, Corner corner, Vector2 offset)
-    {
-        switch (corner)
-        {
-            case Corner.TopLeft:
-                rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0, 1);
-                break;
-            case Corner.TopRight:
-                rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(1, 1);
-                break;
-            case Corner.TopCenter:
-                rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 1);
-                rt.pivot = new Vector2(0.5f, 1);
-                break;
-        }
-        rt.anchoredPosition = offset;
-    }
-
-    static void SetAnchorCenter(RectTransform rt, Vector2 offset)
-    {
-        rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.anchoredPosition = offset;
-    }
-
-    static GameObject CreateCircleSprite(Transform parent, string name, float radius, Color color)
-    {
-        var go = new GameObject(name);
-        go.transform.SetParent(parent, false);
-        go.transform.localScale = Vector3.one * radius * 2f;
-
-        var sr = go.AddComponent<SpriteRenderer>();
-        sr.sprite = CreateCircleTexture();
-        sr.color  = color;
-        sr.sortingOrder = 5;
-        return go;
-    }
-
-    static Sprite CreateCircleTexture()
-    {
-        int size = 128;
-        var tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
-        Vector2 center = new Vector2(size / 2f, size / 2f);
-        float r = size / 2f - 2f;
-        float thickness = 6f;
-
-        for (int x = 0; x < size; x++)
-        for (int y = 0; y < size; y++)
-        {
-            float dist = Vector2.Distance(new Vector2(x, y), center);
-            float alpha = 0f;
-
-            // Ring: między r-thickness a r
-            if (dist >= r - thickness && dist <= r)
-                alpha = 1f;
-            // Wewnętrzna kropka (dla InnerRing - mały kółek bez dziury)
-            else if (dist < r - thickness - 2f)
-                alpha = 0f;
-
-            tex.SetPixel(x, y, new Color(1, 1, 1, alpha));
-        }
-
-        tex.Apply();
-        return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
     }
 }

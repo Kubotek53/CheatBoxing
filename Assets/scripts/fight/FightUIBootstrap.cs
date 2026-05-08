@@ -11,23 +11,23 @@ using System.Collections;
 public class FightUIBootstrap : MonoBehaviour
 {
     // ── Referencje tworzone dynamicznie ──────────────────────
-    private Canvas      canvas;
-    private Slider      playerHPSlider, enemyHPSlider;
-    private Image       playerHPFill, enemyHPFill;
+    private Canvas canvas;
+    private Slider playerHPSlider, enemyHPSlider;
+    private Image playerHPFill, enemyHPFill;
     private TextMeshProUGUI hitResultText, turnText, roundResultText;
     private TextMeshProUGUI playerHPLabel, enemyHPLabel;
-    private Image       screenFlash;
-    private GameObject  hitZoneRing;       // kółko docelowe dla nut
+    private Image screenFlash;
+    private GameObject hitZoneRing;       // kółko docelowe dla nut
 
     // ── Paleta kolorów ────────────────────────────────────────
-    static readonly Color COL_BG         = new Color(0.07f, 0.07f, 0.10f, 0.95f);
+    static readonly Color COL_BG = new Color(0.07f, 0.07f, 0.10f, 0.95f);
     static readonly Color COL_PLAYER_BAR = new Color(0.18f, 0.85f, 0.44f);   // zielony
-    static readonly Color COL_ENEMY_BAR  = new Color(0.95f, 0.25f, 0.25f);   // czerwony
-    static readonly Color COL_PERFECT    = new Color(1f,    0.92f, 0.016f);  // złoty
-    static readonly Color COL_GOOD       = new Color(0.18f, 0.85f, 0.44f);
-    static readonly Color COL_OK         = new Color(0.25f, 0.60f, 1f);
-    static readonly Color COL_MISS       = new Color(1f,    0.25f, 0.25f);
-    static readonly Color COL_PANEL      = new Color(0f,    0f,    0f,    0.55f);
+    static readonly Color COL_ENEMY_BAR = new Color(0.95f, 0.25f, 0.25f);   // czerwony
+    static readonly Color COL_PERFECT = new Color(1f, 0.92f, 0.016f);  // złoty
+    static readonly Color COL_GOOD = new Color(0.18f, 0.85f, 0.44f);
+    static readonly Color COL_OK = new Color(0.25f, 0.60f, 1f);
+    static readonly Color COL_MISS = new Color(1f, 0.25f, 0.25f);
+    static readonly Color COL_PANEL = new Color(0f, 0f, 0f, 0.55f);
 
     // ─────────────────────────────────────────────────────────
 
@@ -275,10 +275,10 @@ public class FightUIBootstrap : MonoBehaviour
         if (fm == null) return;
 
         fm.OnPlayerHPChanged += (cur, max) => UpdateSlider(playerHPSlider, playerHPFill, cur, max, COL_PLAYER_BAR);
-        fm.OnEnemyHPChanged  += (cur, max) => UpdateSlider(enemyHPSlider,  enemyHPFill,  cur, max, COL_ENEMY_BAR);
-        fm.OnPlayerAttack    += (result, dmg) => ShowHitResult(result);
-        fm.OnEnemyAttack     += dmg => StartCoroutine(FlashScreen(COL_MISS, 0.18f, 0.28f));
-        fm.OnTurnStarted     += turn =>
+        fm.OnEnemyHPChanged += (cur, max) => UpdateSlider(enemyHPSlider, enemyHPFill, cur, max, COL_ENEMY_BAR);
+        fm.OnPlayerAttack += (result, dmg) => ShowHitResult(result);
+        fm.OnEnemyAttack += dmg => StartCoroutine(FlashScreen(COL_MISS, 0.18f, 0.28f));
+        fm.OnTurnStarted += turn =>
         {
             if (turnText) turnText.text = $"Tura {turn}/{fm.totalTurns}";
         };
@@ -286,14 +286,14 @@ public class FightUIBootstrap : MonoBehaviour
         {
             (string label, Color col) = result switch
             {
-                FightManager.RoundResult.Win              => ("WYGRANA!",    COL_GOOD),
-                FightManager.RoundResult.Lose             => ("PORAŻKA",     COL_MISS),
+                FightManager.RoundResult.Win => ("WYGRANA!", COL_GOOD),
+                FightManager.RoundResult.Lose => ("PORAŻKA", COL_MISS),
                 FightManager.RoundResult.BonusTurnStarted => ("BONUS TURA!", COL_OK),
-                _                                         => ("?",           Color.white)
+                _ => ("?", Color.white)
             };
             if (roundResultText != null)
             {
-                roundResultText.text  = label;
+                roundResultText.text = label;
                 roundResultText.color = col;
                 StartCoroutine(FadeText(roundResultText, 2.5f));
                 StartCoroutine(FlashScreen(col, 0.22f, 0.45f));
@@ -325,13 +325,13 @@ public class FightUIBootstrap : MonoBehaviour
         (string label, Color col) = result switch
         {
             InputHandler.HitResult.Perfect => ("PERFECT!", COL_PERFECT),
-            InputHandler.HitResult.Good    => ("GOOD",     COL_GOOD),
-            InputHandler.HitResult.Ok      => ("OK",       COL_OK),
-            InputHandler.HitResult.Miss    => ("MISS",     COL_MISS),
-            _                              => ("?",        Color.white)
+            InputHandler.HitResult.Good => ("GOOD", COL_GOOD),
+            InputHandler.HitResult.Ok => ("OK", COL_OK),
+            InputHandler.HitResult.Miss => ("MISS", COL_MISS),
+            _ => ("?", Color.white)
         };
 
-        hitResultText.text  = label;
+        hitResultText.text = label;
         hitResultText.color = col;
         StopCoroutine(nameof(FadeHitText));
         StartCoroutine(FadeHitText());
@@ -346,7 +346,7 @@ public class FightUIBootstrap : MonoBehaviour
         // Skok w górę
         var rt = hitResultText.GetComponent<RectTransform>();
         Vector2 start = new Vector2(0, 80);
-        Vector2 end   = new Vector2(0, 130);
+        Vector2 end = new Vector2(0, 130);
         float t = 0f; float dur = 0.55f;
 
         while (t < dur)
